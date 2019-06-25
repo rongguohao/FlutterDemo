@@ -33,8 +33,8 @@ class RandomWordsState extends State<RandomWords> {
 
   final _biggerFont = const TextStyle(fontSize: 18.0);
 
-  //  var _data =<Person>[]; 
-  var _data='Startup Name Generator';
+  //  var _data =<Person>[];
+  var _data = 'Startup Name Generator';
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -125,21 +125,22 @@ class RandomWordsState extends State<RandomWords> {
     );
   }
 
-    _getData() async {
-    var url = 'http://localhost:1000/api/values';
+  _getData() async {
+    var url = 'http://192.168.1.144:1000/api/values';
     var httpClient = new HttpClient();
-    var result='hahha';
+    var result = 'hahha';
     try {
       var request = await httpClient.getUrl(Uri.parse(url));
+
       var response = await request.close();
+
       if (response.statusCode == HttpStatus.ok) {
         var json = await response.transform(utf8.decoder).join();
         var data = jsonDecode(json);
-        result = data['origin'];
-      } 
-    } catch (exception) {
- 
-    }
+        print(data);
+        result = data[0]['name'];
+      }
+    } catch (exception) {}
 
     // If the widget was removed from the tree while the message was in flight,
     // we want to discard the reply rather than calling setState to update our
@@ -152,8 +153,8 @@ class RandomWordsState extends State<RandomWords> {
   }
 }
 
-  class Person{
-    String Name;
+class Person {
+  String Name;
 
-    int Age;
-  }
+  int Age;
+}
