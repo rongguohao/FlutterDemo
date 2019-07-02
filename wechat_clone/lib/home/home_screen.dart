@@ -3,6 +3,10 @@ import 'package:wechat_clone/constants.dart';
 
 import '../constants.dart' show Constants;
 
+enum ActionItems{
+  GROUP_CHAT,ADD_FRIEND,QR_SCAN,PAYMENT,HELP
+}
+
 class NavigationIconView {
   final String _title;
   final IconData _icon;
@@ -60,6 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
+  _buildPopupMenuItem(int iconName, String title) {
+    return Row(children: <Widget>[
+      Icon(IconData(iconName, fontFamily: Constants.IconFontFamily)),
+      Container(width: 12.0),
+      Text(title)
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
@@ -76,16 +88,42 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text('微信'),
         actions: <Widget>[
           IconButton(
-              icon: Icon(Icons.search),
+              icon: Icon(IconData(0xe614, fontFamily: Constants.IconFontFamily),
+                  size: 22.0),
               onPressed: () {
                 print('点击了搜索按钮');
               }),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              print('显示下拉');
+          Container(width: 12.0),
+          // IconButton(
+          //   icon:  Icon(IconData(0xe61e, fontFamily: Constants.IconFontFamily),size:22.0),
+          //   onPressed: () {
+          //     print('显示下拉');
+          //   }),
+          PopupMenuButton(
+            itemBuilder: (BuildContext context) {
+              return <PopupMenuItem<ActionItems>>[
+                PopupMenuItem(
+                    child: _buildPopupMenuItem(0xe61e, '发起群聊'),
+                    value: ActionItems.GROUP_CHAT),
+                PopupMenuItem(
+                    child: _buildPopupMenuItem(0xe61e, '添加朋友'),
+                    value: ActionItems.ADD_FRIEND),
+                PopupMenuItem(
+                    child: _buildPopupMenuItem(0xe61e, '扫一扫'),
+                    value: ActionItems.QR_SCAN),
+                PopupMenuItem(
+                    child: _buildPopupMenuItem(0xe61e, '收付款'),
+                    value: ActionItems.PAYMENT),
+                PopupMenuItem(
+                    child: _buildPopupMenuItem(0xe61e, '帮助与反馈'),
+                    value: ActionItems.HELP),
+              ];
             },
-          )
+            icon: Icon(IconData(0xe61e, fontFamily: Constants.IconFontFamily),
+                size: 22.0),
+                onSelected: (ActionItems selected){print('点击的是$selected');},
+          ),
+          Container(width: 16.0)
         ],
         // backgroundColor: Color(0xff303030),
       ),
