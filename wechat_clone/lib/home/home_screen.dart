@@ -6,24 +6,13 @@ import '../constants.dart' show Constants;
 enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 
 class NavigationIconView {
-  final String _title;
-  final IconData _icon;
-  final IconData _activeIcon;
   final BottomNavigationBarItem item;
 
-  NavigationIconView(
-      {Key key, String title, IconData icon, IconData activeIcon})
-      : _title = title,
-        _icon = icon,
-        _activeIcon = activeIcon,
-        item = BottomNavigationBarItem(
-            icon: Icon(icon, color: Color(AppColors.TabIconNormal)),
-            activeIcon: Icon(activeIcon, color: Color(AppColors.TabIconActive)),
-            title: Text(
-              title,
-              style: TextStyle(
-                  fontSize: 14.0, color: Color(AppColors.TabIconNormal)),
-            ),
+  NavigationIconView({Key key, String title, IconData icon, IconData activeIcon})
+      :     item = BottomNavigationBarItem(
+            icon: Icon(icon),
+            activeIcon: Icon(activeIcon),
+            title: Text(title),
             backgroundColor: Colors.white);
 }
 
@@ -76,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final BottomNavigationBar botNavBar = BottomNavigationBar(
+        fixedColor: const Color(AppColors.TabIconActive),
         items: _navigationViews.map((NavigationIconView view) {
           return view.item;
         }).toList(),
