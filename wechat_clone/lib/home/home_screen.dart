@@ -3,9 +3,7 @@ import 'package:wechat_clone/constants.dart';
 
 import '../constants.dart' show Constants;
 
-enum ActionItems{
-  GROUP_CHAT,ADD_FRIEND,QR_SCAN,PAYMENT,HELP
-}
+enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 
 class NavigationIconView {
   final String _title;
@@ -36,6 +34,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   List<NavigationIconView> _navigationViews;
+  int _currentIndex = 0;
 
   @override
   void initState() {
@@ -49,7 +48,7 @@ class _HomeScreenState extends State<HomeScreen> {
       NavigationIconView(
         title: '通讯录',
         icon: IconData(0xe601, fontFamily: Constants.IconFontFamily),
-        activeIcon: IconData(0xe601, fontFamily: Constants.IconFontFamily),
+        activeIcon: IconData(0xe600, fontFamily: Constants.IconFontFamily),
       ),
       NavigationIconView(
         title: '发现',
@@ -66,9 +65,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   _buildPopupMenuItem(int iconName, String title) {
     return Row(children: <Widget>[
-      Icon(IconData(iconName, fontFamily: Constants.IconFontFamily)),
+      Icon(IconData(iconName, fontFamily: Constants.IconFontFamily),
+          size: 22.0, color: const Color(AppColors.AppBarPopupMenuColor)),
       Container(width: 12.0),
-      Text(title)
+      Text(title,
+          style: TextStyle(color: const Color(AppColors.AppBarPopupMenuColor)))
     ]);
   }
 
@@ -78,14 +79,18 @@ class _HomeScreenState extends State<HomeScreen> {
         items: _navigationViews.map((NavigationIconView view) {
           return view.item;
         }).toList(),
-        currentIndex: 0,
+        currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
         onTap: (int index) {
-          print('点击的是第${index + 1}个tab');
+          setState(() {
+            _currentIndex = index;
+          });
+          // print('点击的是第${index + 1}个tab');
         });
     return Scaffold(
       appBar: AppBar(
         title: Text('微信'),
+        elevation: 0.0,//阴影
         actions: <Widget>[
           IconButton(
               icon: Icon(IconData(0xe614, fontFamily: Constants.IconFontFamily),
@@ -103,32 +108,31 @@ class _HomeScreenState extends State<HomeScreen> {
             itemBuilder: (BuildContext context) {
               return <PopupMenuItem<ActionItems>>[
                 PopupMenuItem(
-                    child: _buildPopupMenuItem(0xe61e, '发起群聊'),
+                    child: _buildPopupMenuItem(0xe619, '发起群聊'),
                     value: ActionItems.GROUP_CHAT),
                 PopupMenuItem(
-                    child: _buildPopupMenuItem(0xe61e, '添加朋友'),
+                    child: _buildPopupMenuItem(0xe624, '添加朋友'),
                     value: ActionItems.ADD_FRIEND),
                 PopupMenuItem(
-                    child: _buildPopupMenuItem(0xe61e, '扫一扫'),
+                    child: _buildPopupMenuItem(0xe634, '扫一扫'),
                     value: ActionItems.QR_SCAN),
                 PopupMenuItem(
-                    child: _buildPopupMenuItem(0xe61e, '收付款'),
-                    value: ActionItems.PAYMENT),
-                PopupMenuItem(
-                    child: _buildPopupMenuItem(0xe61e, '帮助与反馈'),
-                    value: ActionItems.HELP),
+                    child: _buildPopupMenuItem(0xe656, '收付款'),
+                    value: ActionItems.PAYMENT)
               ];
             },
             icon: Icon(IconData(0xe61e, fontFamily: Constants.IconFontFamily),
                 size: 22.0),
-                onSelected: (ActionItems selected){print('点击的是$selected');},
+            onSelected: (ActionItems selected) {
+              print('点击的是$selected');
+            },
           ),
           Container(width: 16.0)
         ],
         // backgroundColor: Color(0xff303030),
       ),
       body: Container(
-        color: Colors.red,
+        color: Colors.white,
       ),
       bottomNavigationBar: botNavBar,
     );
