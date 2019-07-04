@@ -8,8 +8,9 @@ enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 class NavigationIconView {
   final BottomNavigationBarItem item;
 
-  NavigationIconView({Key key, String title, IconData icon, IconData activeIcon})
-      :     item = BottomNavigationBarItem(
+  NavigationIconView(
+      {Key key, String title, IconData icon, IconData activeIcon})
+      : item = BottomNavigationBarItem(
             icon: Icon(icon),
             activeIcon: Icon(activeIcon),
             title: Text(title),
@@ -22,8 +23,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  PageController _pageController;
   List<NavigationIconView> _navigationViews;
   int _currentIndex = 0;
+  List<Widget> _pages;
 
   @override
   void initState() {
@@ -50,6 +53,13 @@ class _HomeScreenState extends State<HomeScreen> {
         activeIcon: IconData(0xe606, fontFamily: Constants.IconFontFamily),
       )
     ];
+    _pageController = PageController(initialPage: _currentIndex);
+    _pages = [
+      Container(color: Colors.red),
+      Container(color: Colors.green),
+      Container(color: Colors.blue),
+      Container(color: Colors.yellow)
+    ];
   }
 
   _buildPopupMenuItem(int iconName, String title) {
@@ -74,13 +84,16 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (int index) {
           setState(() {
             _currentIndex = index;
+
+            _pageController.animateToPage(_currentIndex,
+                duration: Duration(microseconds: 200), curve: Curves.easeOut);
           });
           // print('点击的是第${index + 1}个tab');
         });
     return Scaffold(
       appBar: AppBar(
         title: Text('微信'),
-        elevation: 0.0,//阴影
+        elevation: 0.0, //阴影
         actions: <Widget>[
           IconButton(
               icon: Icon(IconData(0xe614, fontFamily: Constants.IconFontFamily),
@@ -121,8 +134,18 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
         // backgroundColor: Color(0xff303030),
       ),
-      body: Container(
-        color: Colors.white,
+      body: PageView.builder(
+        itemBuilder: (BuildContext context, int index) {
+          return _pages[index];
+        },
+        controller: _pageController,
+        itemCount: _pages.length,
+        onPageChanged: (int index) {
+          setState((){
+            _currentIndex=index;
+          });
+          print('当前显示的是第$index页');
+        },
       ),
       bottomNavigationBar: botNavBar,
     );
