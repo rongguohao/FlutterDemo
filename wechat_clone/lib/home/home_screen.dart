@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wechat_clone/constants.dart';
 
 import '../constants.dart' show Constants;
+import '../home/conversation_page.dart' ;
 
 enum ActionItems { GROUP_CHAT, ADD_FRIEND, QR_SCAN, PAYMENT, HELP }
 
@@ -55,7 +56,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
     _pageController = PageController(initialPage: _currentIndex);
     _pages = [
-      Container(color: Colors.red),
+      ConvertsationPage(),
       Container(color: Colors.green),
       Container(color: Colors.blue),
       Container(color: Colors.yellow)
