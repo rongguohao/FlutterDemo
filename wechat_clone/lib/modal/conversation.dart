@@ -5,7 +5,7 @@ class Conversation {
   const Conversation({
     @required this.avatar,
     @required this.title,
-    this.titleColor: AppColors.ConversationTitleColor,
+    this.titleColor: AppColors.TitleTextColor,
     this.des,
     @required this.updateAt,
     this.unReadMsgCount: 0,
